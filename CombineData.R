@@ -3,7 +3,7 @@ rm(list = ls()) #If I want my environment reset for testing.
 #                                   LIBRARIES                                  #
 #===============================================================================
 library(stringr)
-library(Hmisc)
+# library(Hmisc)
 library(stringi)
 library(dplyr)
 library(DataCombine)
