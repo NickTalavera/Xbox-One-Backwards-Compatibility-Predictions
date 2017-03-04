@@ -210,6 +210,8 @@ fixPublishers = function(data) {
   data$publisher = gsub("\\.|\\(.*|\\/.*|\\,.*","",data$publisher)
   data$publisher = synonymousPublishers(data$publisher)
   data$publisher[grepl(data$developer, pattern = 'Valve')] = 'Valve Corporation'
+  data$publisher[grepl(data$gameName, pattern = 'NFL|NHL|MLB|FIFA|UFC|MMA|NASCAR|PGA') & grepl(data$publisher, pattern = 'Electronic Arts')] = 'EA Sports'
+  data$publisher[grepl(data$gameName, pattern = 'NFL|NHL|MLB|FIFA|UFC|MMA|NASCAR|PGA') & grepl(data$publisher, pattern = '2K Games')] = '2K Sports'
   return(data)
 }
 
@@ -356,7 +358,7 @@ synonymousPublishers = function(PublisherStrings) {
   PublisherStrings[grepl(PublisherStrings, pattern = 'Xbox')] = NA
   PublisherStrings[grepl(PublisherStrings, pattern = 'English')] = NA
   PublisherStrings[grepl(PublisherStrings, pattern = '2K') & !grepl(PublisherStrings, pattern = 'Sport', ignore.case = TRUE)] = '2K Games'
-  PublisherStrings[grepl(PublisherStrings, pattern = '2K')] = '2K Sports'
+  PublisherStrings[grepl(PublisherStrings, pattern = '2K') & grepl(PublisherStrings, pattern = 'Sport', ignore.case = TRUE)] = '2K Sports'
   PublisherStrings[grepl(PublisherStrings, pattern = 'UFO.Interactive')] = 'UFO Interactive Games'
   PublisherStrings[grepl(PublisherStrings, pattern = '345')] = '345 Games'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Arc.System.Works', ignore.case = TRUE)] = 'Arc System Works'
@@ -369,7 +371,8 @@ synonymousPublishers = function(PublisherStrings) {
   PublisherStrings[grepl(PublisherStrings, pattern = 'Capcom', ignore.case = TRUE)] = 'Capcom'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Black.Bean', ignore.case = TRUE)] = 'Black Bean Games'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Crave')] = 'Crave'
-  PublisherStrings[grepl(PublisherStrings, pattern = 'Popcap',ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'EA') | grepl(PublisherStrings, pattern = 'Electronic.Arts',ignore.case = TRUE)] = 'Electronic Arts'
+  PublisherStrings[!grepl(PublisherStrings, pattern = 'Sport', ignore.case = TRUE) & (grepl(PublisherStrings, pattern = 'Popcap',ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'EA') | grepl(PublisherStrings, pattern = 'Electronic.Arts',ignore.case = TRUE))] = 'Electronic Arts'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Sport', ignore.case = TRUE) & (grepl(PublisherStrings, pattern = 'Popcap',ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'EA') | grepl(PublisherStrings, pattern = 'Electronic.Arts',ignore.case = TRUE))] = 'EA Sports'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Microsoft',ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Mojang',ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'MGS',ignore.case = TRUE)] = 'Microsoft'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Atari',ignore.case = TRUE)] = 'Atari'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Sega', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Atlus', ignore.case = TRUE)] = 'SEGA'
