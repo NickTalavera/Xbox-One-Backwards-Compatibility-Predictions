@@ -11,6 +11,8 @@ na_count <-function (x) sapply(x, function(y) sum(is.na(y)))
 #===============================================================================
 library(foreach)
 library(parallel)
+library(neuralnet)
+library(stringr)
 library(doParallel)
 if(!exists("cl")){
   library(doParallel)
@@ -95,9 +97,6 @@ summary(data)
 nrow(xb_train)/nrow(data)
 nrow(xb_test)/nrow(data)
 
-#Loading the neuralnet library for the training of neural networks.
-library(neuralnet)
-
 #Training the simplest multilayer feedforward neural network that includes only
 #one hidden node.
 set.seed(0)
@@ -111,7 +110,8 @@ f <- as.formula(paste("isBCCompatible ~", paste(n[!n %in% "isBCCompatible"], col
 
 
 concrete_model = neuralnet(formula = f,
-                           hidden = 1000, #Default number of hidden neurons.
+                           hidden=c(5,3,3), #Default number of hidden neurons.
+                           linear.output = TRUE,
                            data = xb_train)
 
 #Visualizing the network topology using the plot() function.
