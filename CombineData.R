@@ -110,6 +110,7 @@ fixMSXBone = function(data) {
 }
 
 fixUserVoice = function(data) {
+  print(levels(factor(data$in_progress)))
   data$isInProgress[data$in_progress == 'In-Progress'] = TRUE #Games that have been marked as in-progress are stored in a new column
   # data$userVoiceClosed[data$in_progress == 'Closed'] = TRUE #Games that have been marked closed are stored in a new column
   data$isOnUserVoice = TRUE  #Make a column to mark if the game was found on UserVoice
@@ -211,7 +212,7 @@ fixPublishers = function(data) {
   data$publisher = synonymousPublishers(data$publisher)
   data$publisher[grepl(data$developer, pattern = 'Valve')] = 'Valve Corporation'
   data$publisher[grepl(data$gameName, pattern = 'NFL|NHL|MLB|FIFA|UFC|MMA|NASCAR|PGA') & grepl(data$publisher, pattern = 'Electronic Arts')] = 'EA Sports'
-  data$publisher[grepl(data$gameName, pattern = 'NFL|NHL|MLB|FIFA|UFC|MMA|NASCAR|PGA') & grepl(data$publisher, pattern = '2K Games')] = '2K Sports'
+  data$publisher[grepl(data$gameName, pattern = 'NFL|NHL|MLB|FIFA|UFC|MMA|NASCAR|PGA') & grepl(data$publisher, pattern = '(2K Games)|Take')] = '2K Sports'
   return(data)
 }
 
@@ -279,7 +280,8 @@ namePrettier = function(data) {
                    'Far Cry Instincts: Predator','Harry Potter and the Half-Blood Prince','Harry Potter and the Order of the Phoenix','Ice Age: Dawn of the Dinosaurs','Ice Age: Continental Drift - Arctic Games','Chronicles of Riddick: Assault on Dark Athena','Sid Meier\'s Civilization Revolution','Tomb Raider: Anniversary','Poker Night 2','Street Fighter III: Third Strike Online Edition',
                    'Super Street Fighter II Turbo HD Remix','The Serious Sam Collection','SBK X: Superbike World Championship','SBK SuperBike World Championship','Kingdom Under Fire: Circle of Doom','Red Johnson\'s Chronicles - One Against All','Penny Arcade Adventures: Episode Two','Panzer General Allied Assault','Ninety-Nine Nights II',
                    'NCAA Basketball 09 March Madness Edition','MUD - FIM Motocross World Championship','MXGP - The Official Motocross Videogame','Mortal Kombat vs. DC Universe','Mortal Kombat Arcade Kollection','Lord of the Rings: Battle for Middle-Earth II','Fist of the North Star: Ken\'s Rage',
-                   'Guncraft: Blocked and Loaded','Green Lantern: Rise of the Manhunters','Happy Tree Friends False Alarm','Tom Clancy\'s Ghost Recon: Future Soldier','Pinball Hall of Fame: The Williams Collection'
+                   'Guncraft: Blocked and Loaded','Green Lantern: Rise of the Manhunters','Happy Tree Friends False Alarm','Tom Clancy\'s Ghost Recon: Future Soldier','Pinball Hall of Fame: The Williams Collection',
+                   'BCFxDoug Williams Edition','BanjoKazooie: Nuts & Bolts'
                    )
   names(gameNameDict) = tolower(c('Modern Warfare 2','Modern Warfare 3','Modern Warfare','Battlefield: Bad Co. 2','COD: Black Ops II','DEAD RISING',
                           'Halo 3: ODST Campaign Edition','Halo: Combat Evolved', 'LOST PLANET 2','NFS ProStreet','Plants vs Zombies Garden Warfare','RESIDENT EVIL 5',
@@ -320,7 +322,8 @@ namePrettier = function(data) {
                           'FC Instincts Predator','Harry Potter HBP','Harry Potter OOTP','Ice Age 3','Ice Age 4','Assault on Dark Athena','Civilization Revolution','Lara Croft Tomb Raider Anniversary','Telltale Games\' Poker Night 2','Street Fighter III: Online Edition',
                           'Super Street Fighter 2 Turbo HD','Serious Sam','SBK X','SBK','KUF: Circle of Doom','Red Johnson\'s Chronicles','Penny Arcade Episode 2','Panzer General','Ninety-Nine NightsⅡ/NA',
                           'NCAA Basketball March Madness Edition','MUD','MXGP','Mortal Kombat vs. DCU','Mortal Kombat Arcade','Lord of the Rings, BFME II','Fist of the North Star',
-                          'Guncraft','Green Lantern','Happy Tree Friends','Ghost Recon: Future Soldier','Pinball Hall of Fame'
+                          'Guncraft','Green Lantern','Happy Tree Friends','Ghost Recon: Future Soldier','Pinball Hall of Fame',
+                          'BCFxDoug Williams Ed.','Banjo Kazooie: Nuts n Bolts'
                           ))
   data$gameName[tolower(data$gameName)%in%names(gameNameDict)] = gameNameDict[tolower(data$gameName[tolower(data$gameName)%in%names(gameNameDict)])]
   data$gameName = str_trim(data$gameName)
@@ -499,7 +502,7 @@ dataUltImputed$price = round(dataUltImputed$price,digits = 2)
 sapply(dataUltImputed, function(y) sum(length(which(is.na(y)))))
 sapply(dataUltImputed,class)
 
-setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
+setwd('/Users/nicktalavera/Coding/Data Science/Xbox-One-Backwards-Compatability-Predictions/Xbox Back Compat Data/')
 write.csv(dataUlt,'dataUlt.csv')
 write.csv(dataUltImputed,'dataUltImputed.csv')
 stopCluster(cl)
