@@ -127,7 +127,7 @@ model_results = compute(concrete_model, xb_test[sapply(xb_test,is.numeric) | sap
 predicted_strength = as.data.frame(cbind(as.character(test_ids), as.logical(round(model_results$net.result - 1))))
 predicted_strength = dplyr::select(predicted_strength, gameName = V1, predicted_isBCCompatible = V2)
 dataOut = merge(x = dataOriginal, y = predicted_strength, by = "gameName", all.x = TRUE)
-dataOut$predicted_isBCCompatible[dataOut$isBCCompatible == TRUE] = dataOut$isBCCompatible[dataOut$isBCCompatible == TRUE]  
+dataOut$predicted_isBCCompatible[dataOut$isBCCompatible == TRUE | dataOut$isKinectRequired == TRUE | dataOut$usesRequiredPeripheral == TRUE] = dataOut$isBCCompatible[dataOut$isBCCompatible == TRUE | dataOut$isKinectRequired == TRUE | dataOut$usesRequiredPeripheral == TRUE]
 
 # #Examining the correlation between predicted and actual values.
 # cor(predicted_strength$predicted_isBCCompatible, xb_test$isBCCompatible)
