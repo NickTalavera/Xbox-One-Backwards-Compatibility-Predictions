@@ -25,8 +25,8 @@ if(!exists("cl")){
 #===============================================================================
 if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/')) {
   dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/'
-} else if (dir.exists('/Users/nicktalavera/Coding/Data Science/Xbox-One-Backwards-Compatability-Predictions/Xbox Back Compat Data/')) {
-  dataLocale = '/Users/nicktalavera/Coding/Data Science/Xbox-One-Backwards-Compatability-Predictions/Xbox Back Compat Data/'
+} else if (dir.exists('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data/')) {
+  dataLocale = '/Volumes/SDExpansion/Data Files/Xbox Back Compat Data/'
   # setwd('/Users/nicktalavera/Coding/Data Science/Xbox-One-Backwards-Compatability-Predictions/Xbox Back Compat Data')
 }  else if (dir.exists('/home/bc7_ntalavera/Data/Xbox/')) {
   dataLocale = '/home/bc7_ntalavera/Data/Xbox/'
@@ -133,9 +133,8 @@ dataOut$predicted_isBCCompatible[dataOut$isBCCompatible == TRUE] = dataOut$isBCC
 # cor(predicted_strength$predicted_isBCCompatible, xb_test$isBCCompatible)
 plot(predicted_strength$predicted_isBCCompatible, xb_test$isBCCompatible)
 
-# write.csv(submission, file = file.path(dataLocale, "dataWPrediction.csv"), row.names = FALSE)
+write.csv(dataOut, file = file.path(dataLocale, "dataWPrediction.csv"), row.names = FALSE)
 print("...Done!")
 
 # Stop parallel clusters
 stopCluster(cl)
-# submissionNew = submission[submission$isBCCompatible==FALSE & submission$isKinectRequired == FALSE & submission$usesRequiredPeripheral == FALSE & submission$predicted_isBCCompatible == FALSE,]
